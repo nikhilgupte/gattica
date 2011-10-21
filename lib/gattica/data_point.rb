@@ -20,7 +20,11 @@ module Gattica
         { dimension.attributes['name'].split(':').last.to_sym => dimension.attributes['value'].split(':').last }
       end
       @metrics = xml.search('dxp:metric').collect do |metric|
-        { metric.attributes['name'].split(':').last.to_sym => metric.attributes['value'].split(':').last.to_i }
+				if metric.attributes['type'] == 'percent'
+        	{ metric.attributes['name'].split(':').last.to_sym => metric.attributes['value'].split(':').last.to_f.round(2) }
+				else
+        	{ metric.attributes['name'].split(':').last.to_sym => metric.attributes['value'].split(':').last.to_i }
+				end
       end
     end
     
